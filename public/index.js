@@ -208,5 +208,39 @@ rentals.forEach(function(item,index,array){
 
 // Question 5
 
+actors.forEach(function(itemactors,indexactors,arrayactors){
+  var ind;
+  rentals.forEach(function(itemrentals,indexrentals,arrayrentals){
+    if(itemrentals.id==itemactors.rentalId)
+    {
+      ind = indexrentals;
+    }
+  })
+  itemactors.payment.forEach(function(itemactorspayment,indexactorspayment,arrayactorspayments){
+    var tot_com;
+    if (itemactorspayment.who=='driver')
+    {
+      itemactorspayment.amount=rentals[ind].price;
+    }
+    else if(itemactorspayment.who=='partner')
+    {
+      tot_com = rentals[ind].commission.insurance+rentals[ind].commission.treasury+rentals[ind].commission.virtuo;
+      itemactorspayment.amount=rentals[ind].price-tot_com;
+    }
+    else if (itemactorspayment.who=='insurance')
+    {
+      itemactorspayment.amount=rentals[ind].commission.insurance;
+    }
+    else if (itemactorspayment.who=='treasury')
+    {
+      itemactorspayment.amount=rentals[ind].commission.treasury;
+    }
+    else if (itemactorspayment.who=='virtuo')
+    {
+      itemactorspayment.amount=rentals[ind].commission.virtuo;
+    }
+  })
+})
 
+console.log(actors);
 console.log(rentals);
