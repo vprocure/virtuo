@@ -32,7 +32,7 @@ const rentals = [{
     'firstName': 'Roman',
     'lastName': 'Frayssinet'
   },
-  'carId': 'f944a3ff-591b-4d5b-9b67-c7e08cba9791',
+  'carId': 'a9c1b91b-5e3d-4cec-a3cb-ef7eebb4892e',
   'pickupDate': '2020-01-02',
   'returnDate': '2020-01-02',
   'distance': 100,
@@ -73,6 +73,7 @@ const rentals = [{
   'carId': '4afcc3a2-bbf4-44e8-b739-0179a6cd8b7d',
   'pickupDate': '2019-12-01',
   'returnDate': '2019-12-15',
+  'distance':1000,
   'options': {
     'deductibleReduction': true
   },
@@ -157,6 +158,55 @@ const actors = [{
   }]
 }];
 
-console.log(cars);
+// Question 1
+rentals.forEach(function(item,index,array){
+  var pickupday = new Date(item.pickupDate);
+  var returnday = new Date(item.returnDate);
+  var nbdays = ((returnday-pickupday)/86400000)+1
+  var new_ind;
+  cars.forEach(function(itemcars,indexcars,array){
+    if (itemcars.id==item.carId)
+    {
+      new_ind = indexcars;
+    }
+  })
+  item.price = item.distance*cars[new_ind].pricePerKm + nbdays*cars[new_ind].pricePerDay;
+});
+
+
+// Question 2
+rentals.forEach(function(item,index,array){
+  var nbdays = ((new Date(item.returnDate) - new Date(item.pickupDate))/86400000)+1;
+  if(nbdays>1 && nbdays<=4){
+    item.price=item.price*0.9;
+  }
+  else if (nbdays>4 && nbdays<=10){
+    item.price=item.price*0.7;
+  }
+  else if (nbdays>10){
+    item.price=item.price*0.5;
+  }
+
+})
+
+// Question 3
+rentals.forEach(function(item,index,array){
+  var commission = 0.3*item.price;
+  item.commission.insurance=0.5*commission;
+  item.commission.treasury= ((new Date(item.returnDate) - new Date(item.pickupDate))/86400000)+1;
+  item.commission.virtuo = commission - item.commission.insurance - item.commission.treasury;
+})
+
+// Question 4
+rentals.forEach(function(item,index,array){
+  if (item.options.deductibleReduction == true){
+    var nbdays = ((new Date(item.returnDate) - new Date(item.pickupDate))/86400000)+1;
+    item.price+=nbdays*4;
+    item.commission.virtuo+=nbdays*4;
+  }
+})
+
+// Question 5
+
+
 console.log(rentals);
-console.log(actors);
